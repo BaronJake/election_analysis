@@ -32,25 +32,39 @@ with open(file_to_load, "r") as election_data:
             candidate_votes[candidate_name] = 0
         candidate_votes[candidate_name] += 1
 
-for candidate in candidate_options:
-
-    vote_count = candidate_votes[candidate]
-    percentage_of_votes = vote_count/total_votes * 100
-
-    print(f"{candidate_name}: {percentage_of_votes:.1f}% ({vote_count:,})\n")
-    
-    if vote_count > winning_count and percentage_of_votes > winning_percentage:
-        winning_candidate = candidate
-        winning_count = vote_count
-        winning_percentage = percentage_of_votes
-
-winning_candidate_summary = (
-    f"-------------------------\n"
-    f"Winner: {winning_candidate}\n"
-    f"Winning Vote Count: {winning_count:,}\n"
-    f"Winning Percentage: {winning_percentage:.1f}%\n"
-    f"-------------------------\n")
-print(winning_candidate_summary)
+election_result = (
+    f"Election Results\n"
+    f"------------------------\n"
+    f"Total Votes: {total_votes}\n"
+    f"------------------------\n"
+)
+print(election_result, end="")
 
 with open(file_to_save, "w") as outfile:
-    outfile.write("Hello World")
+    outfile.write(election_result)
+
+    for candidate in candidate_options:
+
+        vote_count = candidate_votes[candidate]
+        percentage_of_votes = vote_count/total_votes * 100
+
+        candidate_results = f"{candidate}: {percentage_of_votes:.1f}% ({vote_count:,})\n"
+        
+        print(candidate_results)
+        outfile.write(candidate_results)
+
+        if vote_count > winning_count and percentage_of_votes > winning_percentage:
+            winning_candidate = candidate
+            winning_count = vote_count
+            winning_percentage = percentage_of_votes
+
+    winning_candidate_summary = (
+        f"-------------------------\n"
+        f"Winner: {winning_candidate}\n"
+        f"Winning Vote Count: {winning_count:,}\n"
+        f"Winning Percentage: {winning_percentage:.1f}%\n"
+        f"-------------------------\n")
+    print(winning_candidate_summary)
+    outfile.write(winning_candidate_summary)
+
+
